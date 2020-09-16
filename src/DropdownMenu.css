@@ -1,0 +1,76 @@
+/* Dropdown Menu */
+:root {
+  --bg: #242526;
+  --bg-accent: #484a4d;
+  --text-color: #dadce1;
+  --nav-size: 60px;
+  --border: 1px solid #dad9db;
+  --border-radius: 8px;
+  --speed: 500ms;
+}
+
+.dropdown {
+  position: absolute;
+  top: 55px;
+  right: -5px;
+  width: 120px;
+  transform: translateY(-6px);
+  background-color: #fff;
+  border: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: height var(--speed) ease;
+}
+.dropdown:focus {
+  background-color: green;
+}
+.menu {
+  width: 100%;
+}
+
+.menu-item {
+  height: 38px;
+  display: flex;
+  align-items: center;
+  transition: background var(--speed);
+  padding: 0.1rem;
+  width: 100%;
+  cursor: pointer;
+}
+.menu-item a {
+  text-decoration: none;
+  color: #4f4e50;
+}
+.menu-item .icon-button {
+  margin-right: 0.5rem;
+}
+
+.menu-item .icon-button:hover {
+  filter: none;
+}
+
+.menu-item:hover {
+  background-color: #f5f4f6;
+}
+
+.icon-right {
+  margin-left: auto;
+}
+
+/* CSSTransition classes  */
+/* .menu-primary-enter {
+  position: absolute;
+  transform: translateX(-110%);
+} */
+.menu-primary-enter-active {
+  transform: translateY(5px);
+  transition: all var(--speed) ease;
+}
+/* 
+.menu-primary-exit {
+  position: absolute;
+}
+.menu-primary-exit-active {
+  transform: translateX(-110%);
+  transition: all var(--speed) ease;
+}  */
