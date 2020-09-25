@@ -44,7 +44,8 @@ const DropdownMenu = React.forwardRef((props, ref) => {
       ref={(dropdownRef, ref)}
     >
       <div className="menu">
-        <DropdownItem>My Profile</DropdownItem>
+      <DropdownItem>New group</DropdownItem>
+        <DropdownItem>Profile</DropdownItem>
         <DropdownItem>
           <Link to="/login" className="header__link">
             <div onClick={signOut}>Log out</div>

@@ -1,83 +1,152 @@
-import React, { useEffect, useState } from "react";
-import "./App.css";
-import Sidebar from "./Sidebar";
-import Chat from "./Chat";
-import Login from "./Login";
-import Pusher from "pusher-js";
-import axios from "./axios.js";
-import { auth } from "./firebase";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { useStateValue } from "./StateProvider";
-import { actionTypes } from "./reducer";
+import React, { useEffect, useState } from "react"
+import "./App.css"
+import Sidebar from "./Sidebar"
+import Chat from "./Chat"
+import Login from "./Login"
+
+import axios from "./axios.js"
+import { auth } from "./firebase"
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom"
+import { useStateValue } from "./StateProvider"
+import { actionTypes } from "./reducer"
+import { PrivateRoute } from "./PrivateRoute"
 
 function App() {
-  const [state, dispatch] = useStateValue();
-  const [messages, setMessages] = useState([]);
-  useEffect(() => {
-    async function fetchMessages() {
-      await axios.get("/v1/messages/sync").then((response) => {
-        // console.log(response.data);
-        setMessages(response.data);
-      });
-    }
-    fetchMessages();
-  }, []);
-  useEffect(() => {
-    var pusher = new Pusher("9c1476dabbd8085397d7", {
-      cluster: "us3",
-    });
-    //event listener
-    var channel = pusher.subscribe("messages");
-    channel.bind("inserted", (newMessage) => {
-      setMessages([...messages, newMessage]); //append to previous messages
-      // console.log(messages);
-    });
-    //unsubscribe listener after every network call
-    return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
-    };
-  }, [messages]);
+  const [{ isLoggedIn }, dispatch] = useStateValue()
+  // useEffect(() => {
+  //   async function fetchMessages() {
+  //     await axios.get("/v1/messages/sync").then((response) => {
+  //       // console.log(response.data);
+  //       setMessages(response.data);
+  //     });
+  //   }
+  //   fetchMessages();
+  // }, []);
 
   //keeps track of user
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+    const unsubscribe = auth.onAuthStateChanged(authUser => {
       if (authUser) {
         //user is logged in
+        console.log(authUser)
+        localStorage.setItem("whatsappToken", JSON.stringify(authUser))
+
+        console.log("the token", localStorage.getItem("whatsappToken"))
         dispatch({
           type: actionTypes.SET_USER,
-          user: authUser,
-        });
+          isLoggedIn: Boolean(localStorage.getItem("whatsappToken"))
+        })
       } else {
         //user is logged out
+        localStorage.removeItem("whatsappToken")
         dispatch({
-          type: "SET_USER",
-          user: null,
-        });
+          type: actionTypes.SET_USER,
+          isLoggedIn: Boolean(localStorage.getItem("whatsappToken"))
+        })
       }
-    });
+    })
     return () => {
-      unsubscribe(); //detach listener
-    };
-  }, [dispatch]);
+      unsubscribe() //detach listener
+    }
+  }, [dispatch])
+
+  // if (!user) {
+  //   return (
+  //     <Router>
+  //       <Redirect to="/login" />
+  //       <Route to="/login">
+  //         <Login />
+  //       </Route>
+  //     </Router>
+  //   )
+  // }
+  // return (
+  //   <Router>
+  //     <div className="app__body">
+  //       <Sidebar />
+  //       <Switch>
+  //         <Route path="/rooms/:roomId">
+  //           <Chat />
+  //         </Route>
+  //         <Route exact path="/">
+  //           <Chat />
+  //         </Route>
+  //       </Switch>
+  //     </div>
+  //   </Router>
+  // )
+  // if (!isLoggedIn) {
+  //   return (
+  //     <Router>
+  //       <Redirect to="/login" />
+  //       <Route path="/login">
+  //         <Login />
+  //       </Route>
+  //     </Router>
+  //   )
+  // }
   return (
+    // <div className="app">
+    //   <Router>
+    //     <Route path="/login" component={Login} />
+    //     <PrivateRoute path="/rooms/:roomId" component={Chat} />
+    //     <PrivateRoute exact path="/" component={Chat} />
+    //   </Router>
+    // </div>
+    // <>
+    //   <div className="app">
+    //     <Router>
+    //       <Route path="/login" component={Login} />
+
+    //       <Switch>
+    //         <PrivateRoute path="/rooms/:roomId" component={Chat} />
+    //         <PrivateRoute exact path="/" component={Sidebar} />
+    //       </Switch>
+    //     </Router>
+    //   </div>
+    // </>
+    // <>
+    //         <Redirect to="/login" />
+    //         <Route path="/login">
+    //           <Login />
+    //         </Route>
+    //       </>
+    //   <Route exact path="/">
+    //   <Chat />
+    // </Route>
     <div className="app">
       <Router>
-        {!state.user ? (
-          <Route exact path="/login">
-            <Login />
-          </Route>
+        {!isLoggedIn ? (
+          <Login />
         ) : (
-          <div className="app__body">
-            <Route exact path="/">
+          <>
+            <div className="app__body">
               <Sidebar />
-              <Chat messages={messages} />
-            </Route>
-          </div>
+              <Switch>
+                <Route path="/rooms/:roomId">
+                  <Chat />
+                </Route>
+              </Switch>
+            </div>
+          </>
         )}
       </Router>
     </div>
-  );
+    // <div className="app">
+    //   <Router>
+    //     <div className="app__body">
+    //       <Route path="/">
+    //         <Sidebar />
+    //       </Route>
+    //       <Switch>
+    //         <Route path="/rooms/:roomId">
+    //           <Chat />
+    //         </Route>
+    //       </Switch>
+    //     </div>
+    //   </Router>
+    // </div>
+  )
 }
 
-export default App;
+export default App
