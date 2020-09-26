@@ -85,7 +85,7 @@ function Sidebar() {
     <div className="sidebar">
       <div className="sidebar__header">
         <div className="sidebar__headerLeft">
-          <Avatar src={user?.photoURL} />
+          <Avatar src={JSON.parse(localStorage.getItem("whatsappToken"))?.photoURL} />
         </div>
         <div className="sidebar__headerRight">
           <IconButton>

@@ -3,7 +3,7 @@
   "name": "WhatsApp Web",
   "icons": [
     {
-      "src": "logo192.png",
+      "src": "app-favicon.png",
       "type": "image/png",
       "sizes": "192x192"
     }

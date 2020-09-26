@@ -21,6 +21,9 @@
   .sidebar__header {
     width: 100%;
   }
+  .sidebar__headerRight {
+    margin-right: 10px;
+  }
   .chat__header {
     background: #ededed;
     width: 97.25%;
@@ -79,9 +82,6 @@
     margin-top: 0px;
     height: 100vh;
     width: 100vw;
-  }
-  .sidebar__headerRight {
-    margin-right: 10px;
   }
   .chat__headerRight {
     display: none;
