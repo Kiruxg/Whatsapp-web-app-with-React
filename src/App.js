@@ -3,13 +3,11 @@ import "./App.css"
 import Sidebar from "./Sidebar"
 import Chat from "./Chat"
 import Login from "./Login"
-
 import axios from "./axios.js"
 import { auth } from "./firebase"
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom"
 import { useStateValue } from "./StateProvider"
 import { actionTypes } from "./reducer"
-import { PrivateRoute } from "./PrivateRoute"
 
 function App() {
   const [{ isLoggedIn }, dispatch] = useStateValue()
