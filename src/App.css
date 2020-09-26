@@ -99,4 +99,7 @@
   .chat__message {
     font-size: 14px !important;
   }
+  .login__container {
+    padding: 60px !important;
+  }
 }
