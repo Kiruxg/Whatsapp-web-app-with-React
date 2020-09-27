@@ -22,7 +22,7 @@
     width: 100%;
   }
   .sidebar__headerRight {
-    margin-right: 10px;
+    margin-right: 25px;
   }
   .chat__header {
     background: #ededed;
@@ -82,6 +82,9 @@
     margin-top: 0px;
     height: 100vh;
     width: 100vw;
+  }
+  .sidebar__headerRight {
+    margin-right: 10px;
   }
   .chat__headerRight {
     display: none;
