@@ -24,9 +24,8 @@ function Sidebar() {
     //dispatch messageContent array of each room
     async function fetchRooms() {
       try {
-        const response = await Axios.get("/rooms/")
+        const response = await Axios.get("/rooms")
         setRooms(response.data)
-        console.log("dd", response.data)
       } catch (e) {
         console.log("There was a problem.")
       }
@@ -62,7 +61,6 @@ function Sidebar() {
     const roomName = prompt("Please enter a room name:")
     if (roomName) {
       // Math.floor(setSeed(Math.floor(Math.random() * 5000)))
-      console.log(Math.floor(Math.random() * 5000))
       async function createRoom() {
         try {
           const response = await Axios.post("/rooms/new", {
@@ -73,7 +71,6 @@ function Sidebar() {
             timestamp: new Date().toUTCString()
           })
           setRooms([...rooms, response.data])
-          console.log("resource 201", response.data)
         } catch (e) {
           console.log("There was a problem.")
         }

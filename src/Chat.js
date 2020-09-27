@@ -30,8 +30,6 @@ function Chat() {
       //get messageContents in specific doc of collection rooms
       function fetchMessage() {
         Axios.get(`/rooms/${roomId}/messages`).then(response => {
-          console.log("the response", response)
-          console.log("all messages", response.data[0].messageContents)
           setMessages(response.data[0].messageContents)
           setSeed(response.data[0].roomSeed)
           setRoomName(response.data[0].roomName)
@@ -52,6 +50,10 @@ function Chat() {
       // setMessages(messages.push(newMessage))
       if (newMessage.roomId === roomId) {
         setMessages([...messages, newMessage])
+        dispatch({
+          type: actionTypes.SET_MESSAGE,
+          message: newMessage.message
+        })
       }
       //append to previous messages
       // console.log(messages);
@@ -65,7 +67,6 @@ function Chat() {
 
   const addMessage = async e => {
     e.preventDefault()
-    console.log("the roomid::  ", roomId)
     await Axios.post(`/rooms/${roomId}/messages/new`, {
       name: user.displayName,
       message: input,
@@ -79,11 +80,7 @@ function Chat() {
 
   useEffect(() => {
     chatWindow.current.scrollTop = chatWindow.current.scrollHeight
-
-    console.log("new message - check roomName/roomId", messages)
   }, [messages])
-  console.log("the width", width)
-  console.log("the roomId", roomId !== "")
 
   return (
     <CSSTransition in={width <= 1000 && toggleChat} timeout={1000} classNames="fade">

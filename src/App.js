@@ -26,10 +26,8 @@ function App() {
     const unsubscribe = auth.onAuthStateChanged(authUser => {
       if (authUser) {
         //user is logged in
-        console.log(authUser)
         localStorage.setItem("whatsappToken", JSON.stringify(authUser))
 
-        console.log("the token", localStorage.getItem("whatsappToken"))
         dispatch({
           type: actionTypes.SET_USER,
           isLoggedIn: Boolean(localStorage.getItem("whatsappToken"))

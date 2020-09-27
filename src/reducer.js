@@ -8,16 +8,17 @@ export const initialState = {
   isLoggedIn: Boolean(localStorage.getItem("whatsappToken")),
   roomInfo: {
     roomName: "",
-    seed: null
+    seed: null,
+    latestMessage: ""
   }
 }
 export const actionTypes = {
   SET_USER: "SET_USER",
-  TOGGLE_CHAT: "TOGGLE_CHAT"
+  TOGGLE_CHAT: "TOGGLE_CHAT",
+  SET_MESSAGE: "SET_MESSAGE"
 }
 
 const reducer = (state, action) => {
-  console.log("action says", action)
   switch (action.type) {
     case actionTypes.SET_USER:
       return {
@@ -33,6 +34,14 @@ const reducer = (state, action) => {
       return {
         ...state,
         toggleChat: !state.toggleChat
+      }
+    case actionTypes.SET_MESSAGE:
+      return {
+        ...state,
+        roomInfo: {
+          ...state.roomInfo,
+          latestMessage: action.message
+        }
       }
     default:
       return state

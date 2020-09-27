@@ -6,9 +6,8 @@ import { useStateValue } from "./StateProvider"
 import { actionTypes } from "./reducer"
 
 function SidebarChat({ id, roomName, roomSeed }) {
-  const [{ user }, dispatch] = useStateValue()
+  const [{ user, roomInfo }, dispatch] = useStateValue()
   const history = useHistory()
-  console.log("thee", roomSeed)
   const selectRoom = () => {
     if (id) {
       history.push(`/rooms/${id}`)
@@ -42,7 +41,7 @@ function SidebarChat({ id, roomName, roomSeed }) {
       <Avatar src={`https://avatars.dicebear.com/api/human/${roomSeed}.svg`} />
       <div className="sidebarChat__info">
         <b>{roomName}</b>
-        <p>Last message sent.</p>
+        <p>{roomInfo.latestMessage}</p>
       </div>
     </div>
     // </Link>
