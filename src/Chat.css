@@ -62,6 +62,8 @@
 .chat__reciever {
   margin-left: auto;
   background-color: #dcf8c6;
+  max-width: 45%;
+  overflow-wrap: break-word;
 }
 .chat__footer {
   display: flex;

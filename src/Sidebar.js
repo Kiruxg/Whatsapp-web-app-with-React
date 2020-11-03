@@ -10,15 +10,21 @@ import { useStateValue } from "./StateProvider"
 import DropdownMenu from "./DropdownMenu"
 import { CSSTransition } from "react-transition-group"
 import Axios from "./axios"
+import { actionTypes } from "./reducer"
+import { useParams } from "react-router-dom"
+import RoomLoader from "./ContentPlaceholder"
 
 function Sidebar() {
   const [{ user, roomInfo }, dispatch] = useStateValue()
   const [dropdown, toggleDropdown] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [rooms, setRooms] = useState()
   const [roomName, setRoomName] = useState("")
+  const [latestMessage, setLatestMessage] = useState("")
   const [seed, setSeed] = useState("")
   const iconBtn = useRef(null)
   const dropdownClose = useRef(null)
+  const { roomId } = useParams()
 
   useEffect(() => {
     //dispatch messageContent array of each room
@@ -26,12 +32,18 @@ function Sidebar() {
       try {
         const response = await Axios.get("/rooms")
         setRooms(response.data)
+        setLoading(false)
+        // setLatestMessage(response.data[0].messageContents[response.data[0].messageContents.length - 1].message)
+        dispatch({
+          type: actionTypes.SET_MESSAGE,
+          message: response.data[0].messageContents[response.data[0].messageContents.length - 1].message
+        })
       } catch (e) {
         console.log("There was a problem.")
       }
     }
     fetchRooms()
-  }, [])
+  }, [roomInfo])
 
   useEffect(() => {
     //Alert if clicked on outside of element
@@ -78,6 +90,7 @@ function Sidebar() {
       createRoom()
     }
   }
+
   return (
     <div className="sidebar">
       <div className="sidebar__header">
@@ -109,18 +122,16 @@ function Sidebar() {
         </div>
       </div>
       <div className="sidebar__chats">
-        {rooms?.map(room => (
-          <SidebarChat key={room._id} id={room._id} roomName={room.roomName} roomSeed={room.roomSeed} />
-        ))}
-        {/* <SidebarChat />
-        <SidebarChat />
-        <SidebarChat />
-        <SidebarChat />
-        <SidebarChat />
-        <SidebarChat />
-        <SidebarChat />
-        <SidebarChat />
-        <SidebarChat /> */}
+        {loading ? 
+        <>
+        <RoomLoader/>
+        <RoomLoader/>
+        </>
+        : 
+        rooms.map(room => (
+          <SidebarChat key={room._id} id={room._id} roomName={room.roomName} roomSeed={room.roomSeed} lastMessage={room.messageContents[room.messageContents.length - 1]?.message} />
+        ))
+        }
       </div>
     </div>
   )

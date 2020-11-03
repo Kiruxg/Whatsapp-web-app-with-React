@@ -4,19 +4,17 @@ import "./DropdownMenu.css";
 import { Link } from "react-router-dom";
 import { useStateValue } from "./StateProvider";
 import { auth } from "./firebase";
+import { actionTypes } from "./reducer";
 
 const DropdownMenu = React.forwardRef((props, ref) => {
-  const [{ user }, dispatch] = useStateValue();
   const history = useHistory();
   const [activeMenu, setActiveMenu] = useState("main");
   const [menuHeight, setMenuHeight] = useState(null);
   const dropdownRef = useRef(null);
 
   const signOut = () => {
-    if (user) {
       auth.signOut();
       history.push("/login");
-    }
   };
 
   useEffect(() => {

@@ -46,13 +46,14 @@ function Chat() {
     //event listener
     var channel = pusher.subscribe("messages")
     channel.bind("inserted", newMessage => {
-      console.log("the new message:: ", newMessage)
+      // console.log("the new message:: ", newMessage)
       // setMessages(messages.push(newMessage))
       if (newMessage.roomId === roomId) {
         setMessages([...messages, newMessage])
         dispatch({
           type: actionTypes.SET_MESSAGE,
-          message: newMessage.message
+          message: newMessage.message,
+          id: newMessage.roomId
         })
       }
       //append to previous messages
@@ -113,7 +114,7 @@ function Chat() {
           <div className="chat__bodyContents">
             {messages?.map((message, key) => {
               return (
-                <p key={key} className={`chat__message ${message.userId === user.uid && "chat__reciever"}`}>
+                <p key={key} className={`chat__message ${message.userId === user?.uid && "chat__reciever"}`}>
                   {message.message}
                   <span className="chat__name">{message.name}</span>
                   <span className="chat__timestamp">{message.timestamp}</span>

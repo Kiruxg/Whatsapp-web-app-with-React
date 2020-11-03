@@ -8,8 +8,7 @@ export const initialState = {
   isLoggedIn: Boolean(localStorage.getItem("whatsappToken")),
   roomInfo: {
     roomName: "",
-    seed: null,
-    latestMessage: ""
+    seed: null
   }
 }
 export const actionTypes = {
@@ -40,7 +39,8 @@ const reducer = (state, action) => {
         ...state,
         roomInfo: {
           ...state.roomInfo,
-          latestMessage: action.message
+          latestMessage: action.message,
+          id: action.id
         }
       }
     default:
